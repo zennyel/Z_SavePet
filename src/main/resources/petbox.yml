@@ -1,0 +1,51 @@
+Menu:
+  Title: "Pets Box"
+  Size: 27
+  Items:
+    Border:
+      Display-Item:
+        - Material: GRAY_STAINED_GLASS_PANE
+          DisplayName: "&7Gray Glass"
+          Lore:
+            - "&fThis is a gray glass pane"
+            - "&fused for decoration."
+        - Material: RED_STAINED_GLASS_PANE
+          DisplayName: "&cRed Glass"
+          Lore:
+            - "&fThis is a red glass pane"
+            - "&fused for decoration."
+
+PetsSettings:
+    common:
+      dropChance: 25
+      multiplier: 25*{level}*42
+    rare:
+      dropChance: 25
+      multiplier: 25*{level}*42
+    epic:
+      dropChance: 25
+      multiplier: 25*{level}*42
+    mythical:
+      dropChance: 25
+      multiplier: 25*{level}*42
+
+PetItems:
+  Money:
+    skull_enabled: true
+    skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
+    #if skull not enabled
+    material: 'ACACIA_DOOR'
+  Exp:
+    skull_enabled: true
+    skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
+    material: 'ACACIA_TABLES'
+  Damage:
+    skull_enabled: true
+    skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
+    #if skull not enabled
+    material: 'ACACIA_LEAVES'
+  Coin:
+    skull_enabled: true
+    skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
+    #if skull not enabled
+    material: 'ACACIA_OAK'

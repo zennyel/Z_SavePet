@@ -1,0 +1,10 @@
+name: SavePets
+version: '${project.version}'
+main: com.zennyel.SavePets
+api-version: 1.19
+commands:
+  pets:
+    description: 'The main command for savepets'
+  reload:
+    description: 'Reload command for savepets'
+
