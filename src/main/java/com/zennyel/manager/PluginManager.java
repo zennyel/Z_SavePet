@@ -7,10 +7,8 @@ import com.zennyel.config.MessagesConfig;
 import com.zennyel.config.PetBoxConfig;
 import com.zennyel.config.PetConfig;
 import com.zennyel.database.PetsDB;
-import com.zennyel.database.type.SQLite;
 import org.bukkit.Bukkit;
 
-import java.sql.Connection;
 
 public class PluginManager {
 
@@ -25,7 +23,6 @@ public class PluginManager {
 
     public PluginManager(SavePets plugin) {
         this.plugin = plugin;
-        instantiateClasses();
     }
 
     public void instantiateClasses(){
