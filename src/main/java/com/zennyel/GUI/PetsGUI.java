@@ -17,24 +17,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PetsGUI extends CustomGUI{
-    private PluginManager pluginManager;
     private PetManager petManager;
     private final PetItem petItem;
 
-    public PetsGUI(Inventory inventory, Player player, FileConfiguration config, SavePets instance, PetManager petManager, PluginManager pluginManager) {
+    public PetsGUI(Inventory inventory, Player player, FileConfiguration config, SavePets instance, PetManager petManager) {
         super(inventory, player, config, instance);
         if (petManager == null) {
             throw new IllegalArgumentException("PetManager cannot be null.");
         }
-        this.pluginManager = pluginManager;
         this.petManager = petManager;
         this.petItem = new PetItem();
     }
     @Override
     public void addItems() {
-        if (petManager == null){
-            this.petManager = pluginManager.getPetManager();
-        }
         List<Pet> petList = new ArrayList<>(petManager.getPlayerPets(getPlayer()));
         int[] slots = {9 + 2, 9 + 4, 9 + 6, 9 + 8};
         for (int i = 0; i < slots.length && i < petManager.getPlayerPets(getPlayer()).size(); i++) {

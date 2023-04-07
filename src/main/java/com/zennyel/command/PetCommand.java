@@ -17,13 +17,11 @@ public class PetCommand implements CommandExecutor {
     private final PetConfigManager petConfigManager;
     private final SavePets instance;
     private final PetManager petManager;
-    private PluginManager pluginManager;
 
-    public PetCommand(PetConfigManager petConfigManager, SavePets instance, PetManager petManager, PluginManager pluginManager) {
+    public PetCommand(PetConfigManager petConfigManager, SavePets instance, PetManager petManager) {
         this.petConfigManager = petConfigManager;
         this.instance = instance;
         this.petManager = petManager;
-        this.pluginManager = pluginManager;
     }
 
     @Override
@@ -39,7 +37,7 @@ public class PetCommand implements CommandExecutor {
         }
 
         if (strings.length == 0){
-            new PetsGUI(petConfigManager.createPetMenu(), player, petConfigManager.getConfiguration(), instance, petManager,pluginManager );
+            new PetsGUI(petConfigManager.createPetMenu(), player, petConfigManager.getConfiguration(), instance, petManager);
         }
 
 

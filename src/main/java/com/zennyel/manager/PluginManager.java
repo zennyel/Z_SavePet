@@ -50,7 +50,7 @@ public class PluginManager {
     }
 
     public void registerCommands(){
-        plugin.getCommand("pets").setExecutor(new PetCommand(petConfigManager, plugin, petManager, this));
+        plugin.getCommand("pets").setExecutor(new PetCommand(petConfigManager, plugin, petManager));
         plugin.getCommand("reload").setExecutor(new ReloadCommand());
     }
 
