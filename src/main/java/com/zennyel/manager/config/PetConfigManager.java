@@ -1,12 +1,10 @@
-package com.zennyel.manager;
+package com.zennyel.manager.config;
 
-import com.zennyel.SavePets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -28,80 +26,73 @@ public class PetConfigManager {
     }
 
     public Inventory createPetMenu() {
-        // Criar um inventário com o tamanho e título especificados na configuração
+        // Obter tamanho e título do inventário da configuração
         int size = configuration.getInt("Menu.Size");
         String title = ChatColor.translateAlternateColorCodes('&', configuration.getString("Menu.Title"));
         Inventory inventory = Bukkit.createInventory(null, size, title);
 
-        // Adicionar os itens de borda na primeira e última linha do inventário
-        for (int i = 0; i < size; i++) {
-            if (i < 9 || i >= size - 9 || i % 9 == 0 || i % 9 == 8) {
-                ItemStack borderItem = null;
-                List<Map<?, ?>> displayItems = configuration.getMapList("Menu.Items.Border.Display-Item");
-                if (displayItems != null && !displayItems.isEmpty()) {
-                    Map<?, ?> item = displayItems.get(0);
-                    if (item != null) {
-                        Material material = Material.getMaterial((String) item.get("Material"));
-                        if (material != null) {
-                            String displayName = ChatColor.translateAlternateColorCodes('&', (String) item.get("DisplayName"));
-                            List<String> lore = new ArrayList<>();
-                            List<String> itemLore = (List<String>) item.get("Lore");
-                            if (itemLore != null && !itemLore.isEmpty()) {
-                                for (String line : itemLore) {
-                                    lore.add(ChatColor.translateAlternateColorCodes('&', line));
-                                }
-                            }
-                            borderItem = new ItemStack(material);
-                            ItemMeta meta = borderItem.getItemMeta();
-                            meta.setDisplayName(displayName);
-                            meta.setLore(lore);
-                            borderItem.setItemMeta(meta);
-                        }
-                    }
-                }
-                if (borderItem != null) {
-                    inventory.setItem(i, borderItem);
-                }
-            }
+        // Obter itens de borda da configuração
+        List<Map<?, ?>> displayItems = configuration.getMapList("Menu.Items.Border.Display-Item");
+        if (displayItems == null || displayItems.isEmpty()) {
+            return inventory;
         }
 
-        // Adicionar os itens de pet na segunda linha do inventário
-        List<Map<?, ?>> petItems = configuration.getMapList("Menu.Items.Pets");
-        if (petItems != null) {
-            for (int i = 0; i < petItems.size(); i++) {
-                String rarity = (String) petItems.get(i).keySet().toArray()[0];
-                Map<?, ?> rarityValues = (Map<?, ?>) petItems.get(i).get(rarity);
-
-                Material material = null;
-                String materialStr = (String) rarityValues.get("Material");
-                if (materialStr != null) {
-                    material = Material.getMaterial(materialStr);
-                }
-
-                if (material != null) {
-                    String displayName = ChatColor.translateAlternateColorCodes('&', (String) rarityValues.get("DisplayName"));
-                    List<String> lore = new ArrayList<>();
-                    List<String> itemLore = (List<String>) rarityValues.get("Lore");
-                    if (itemLore != null && !itemLore.isEmpty()) {
-                        for (String line : itemLore) {
-                            lore.add(ChatColor.translateAlternateColorCodes('&', line));
-                        }
-                    }
-                    ItemStack petItem = new ItemStack(material);
-                    ItemMeta meta = petItem.getItemMeta();
-                    meta.setDisplayName(displayName);
-                    meta.setLore(lore);
-
-                    int slot = i + 9;
-                    inventory.setItem(slot, petItem);
+        // Obter materiais e metadados dos itens de borda da configuração
+        ItemStack topItem = null;
+        ItemStack bottomItem = null;
+        for (Map<?, ?> item : displayItems) {
+            Material material = Material.getMaterial((String) item.get("Material"));
+            if (material == null) {
+                continue;
+            }
+            String displayName = ChatColor.translateAlternateColorCodes('&', (String) item.get("DisplayName"));
+            List<String> lore = new ArrayList<>();
+            List<String> itemLore = (List<String>) item.get("Lore");
+            if (itemLore != null && !itemLore.isEmpty()) {
+                for (String line : itemLore) {
+                    lore.add(ChatColor.translateAlternateColorCodes('&', line));
                 }
             }
+            ItemStack borderItem = new ItemStack(material);
+            ItemMeta meta = borderItem.getItemMeta();
+            meta.setDisplayName(displayName);
+            meta.setLore(lore);
+            borderItem.setItemMeta(meta);
+
+            if (topItem == null) {
+                topItem = borderItem;
+            }
+            bottomItem = borderItem;
         }
+
+        // Preencher inventário com os itens de borda
+        for(int i = 0; i < inventory.getSize() - 9; i++){
+            inventory.setItem(i, topItem);
+        }
+        for(int i = inventory.getSize() - 9; i < inventory.getSize(); i++){
+            inventory.setItem(i, bottomItem);
+        }
+
+
+
+
+
+
 
         return inventory;
     }
 
 
+
+
+    public String getBarrierDisplayName(){return configuration.getString("Menu.Items.Barrier.DisplayName").replace("&", "§");}
+    public List<String> getBarrierLore(){
+        List<String> lore = new ArrayList<>();
+        for(String s : configuration.getStringList("Menu.Items.Barrier.Lore")){
+            lore.add(s.replace("&", "§"));
+        }
+        return lore;
+    }
 
     public String getMenuTitle() {
         return configuration.getString("Menu.Title");

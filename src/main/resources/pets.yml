@@ -2,6 +2,11 @@ Menu:
   Title: "&6Pet Menu"
   Size: 27
   Items:
+    Barrier:
+      DisplayName: "&cYou don't have any pet!"
+      Lore:
+        - "&fAdquire a pet in a pet box!"
+        - "&7Click to equip!"
     Border:
       Display-Item:
         - Material: GRAY_STAINED_GLASS_PANE
@@ -34,22 +39,32 @@ Pets:
       xp: 5+{level}*10000
 
 PetItems:
+  Lore:
+    - '&7{tier} tier'
+    -
+    - '&e&lABILITY'
+    - 'The booster at you level is {boost}%'
+    -
+    - '&6&lLEVEL: &f{petLevel}/{petMaxLevel}'
+    - '&6EXP: {petExp}/{petMaxExp}'
+    - '{progressiveBar} &f{progressivePercentage} '
   Money:
+    displayName: '&6Money&7Pet &7[LVL {petLevel}]'
     skull_enabled: true
     skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
-    #if skull not enabled
     material: 'ACACIA_DOOR'
   Exp:
+    displayName: '&6Exp&7Pet &7[LVL {petLevel}]'
     skull_enabled: true
     skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
     material: 'ACACIA_TABLES'
   Damage:
+    displayName: '&6Damage7Pet &7[LVL {petLevel}]'
     skull_enabled: true
     skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
-    #if skull not enabled
     material: 'ACACIA_LEAVES'
   Coin:
+    displayName: '&6Coin&7Pet &7[LVL {petLevel}]'
     skull_enabled: true
     skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
-    #if skull not enabled
     material: 'ACACIA_OAK'

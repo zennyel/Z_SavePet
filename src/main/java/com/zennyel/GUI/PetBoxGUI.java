@@ -1,68 +1,84 @@
 package com.zennyel.GUI;
 
 import com.zennyel.SavePets;
-import com.zennyel.item.PetBox;
-import com.zennyel.manager.PetBoxConfigManager;
-
-import org.bukkit.Material;
-
+import com.zennyel.manager.config.PetBoxConfigManager;
+import com.zennyel.pet.PetType;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PetBoxGUI extends CustomGUI{
+public class PetBoxGUI extends CustomGUI {
 
-    private PetBoxConfigManager petBoxConfigManager;
+    private final PetBoxConfigManager petBoxConfigManager;
 
-    public PetBoxGUI(Inventory inventory, Player player, FileConfiguration config, SavePets instance,PetBoxConfigManager petBoxConfigManager) {
+    public PetBoxGUI(Inventory inventory, Player player, FileConfiguration config, SavePets instance, PetBoxConfigManager petBoxConfigManager) {
         super(inventory, player, config, instance);
         this.petBoxConfigManager = petBoxConfigManager;
     }
 
-    @Override
     public void addItems() {
-        addGlassPane();
-        PetBox petBox = new PetBox(petBoxConfigManager);
-    }
-
-    public void addGlassPane(){
-        for(int i = 0; i < getInventory().getSize(); i++){
-            addItemsFromConfig(i);
+        List<ItemStack> itemStackList = new ArrayList<>();
+        itemStackList.add(petBoxConfigManager.getItemByType(PetType.COIN));
+        itemStackList.add(petBoxConfigManager.getItemByType(PetType.DAMAGE));
+        itemStackList.add(petBoxConfigManager.getItemByType(PetType.MONEY));
+        itemStackList.add(petBoxConfigManager.getItemByType(PetType.DAMAGE));
+        int i = 9;
+        for (ItemStack is : itemStackList) {
+            animateItem(is, i);
+            i++;
         }
     }
 
-    public void addItemsFromConfig(int slot) {
-        FileConfiguration config = getConfig();
-        List<String> materials = config.getStringList("Menu.Display-Item.Material");
-        Inventory inventory = getInventory();
+    public void animateItem(ItemStack itemStack, int initialSlot) {
+        int numSlots = 9;
+        int numLoops = 3;
+        int delayTicks = 5;
 
-        for (String materialName : materials) {
-            Material material = Material.getMaterial(materialName);
+        int[] slots = new int[numSlots];
+        for (int i = 0; i < numSlots; i++) {
+            slots[i] = i + initialSlot;
+        }
+        for (int j = 0; j < numLoops; j++) {
+            for (int i = 0; i < numSlots; i++) {
+                int slot = slots[i];
+                int nextSlot = (slot + 1) % (initialSlot + numSlots);
+                Bukkit.getScheduler().runTaskLater(getInstance(), () -> {
+                    ItemStack currentItem = getInventory().getItem(slot);
+                    if (currentItem != null && currentItem.isSimilar(itemStack)) {
+                        getInventory().setItem(slot, null);
+                        if (nextSlot == initialSlot) {
 
-            if (material == null) {
-                return;
+                            animateItem(itemStack, initialSlot);
+                        }
+                    }
+                    if (nextSlot >= initialSlot && nextSlot < initialSlot + numSlots) {
+                        getInventory().setItem(nextSlot, itemStack);
+                    }
+                }, delayTicks * (i + j * numSlots));
             }
-
-            ItemStack itemStack = new ItemStack(material);
-            inventory.setItem(slot, itemStack);
+            for (int i = numSlots - 1; i >= 0; i--) {
+                int slot = slots[i];
+                int prevSlot = (slot - 1 + initialSlot + numSlots) % (initialSlot + numSlots);
+                Bukkit.getScheduler().runTaskLater(getInstance(), () -> {
+                    ItemStack currentItem = getInventory().getItem(slot);
+                    if (currentItem != null && currentItem.isSimilar(itemStack)) {
+                        getInventory().setItem(slot, null);
+                        if (prevSlot == initialSlot + numSlots - 1) {
+                            animateItem(itemStack, initialSlot);
+                        }
+                    }
+                    if (prevSlot >= initialSlot && prevSlot < initialSlot + numSlots) {
+                        getInventory().setItem(prevSlot, itemStack);
+                    }
+                }, delayTicks * ((numSlots - 1 - i) + (j + 1) * numSlots));
+            }
         }
-    }
 
-    @Override
-    public ItemStack Item(Material material, String displayName, String description, int slotPosition) {
-        return super.Item(material, displayName, description, slotPosition);
-    }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        super.onInventoryClick(event);
     }
 }
-
-

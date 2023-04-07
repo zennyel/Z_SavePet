@@ -2,14 +2,12 @@ package com.zennyel.GUI;
 
 import com.zennyel.SavePets;
 import com.zennyel.manager.PetManager;
-import com.zennyel.manager.PluginManager;
+import com.zennyel.manager.config.PetConfigManager;
 import com.zennyel.pet.Pet;
 import com.zennyel.pet.PetItem;
-import com.zennyel.pet.PetType;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,18 +17,23 @@ import java.util.List;
 public class PetsGUI extends CustomGUI{
     private PetManager petManager;
     private final PetItem petItem;
+    private final PetConfigManager petConfigManager;
 
-    public PetsGUI(Inventory inventory, Player player, FileConfiguration config, SavePets instance, PetManager petManager) {
+    public PetsGUI(Inventory inventory, Player player, FileConfiguration config, SavePets instance, PetManager petManager, PetConfigManager petConfigManager) {
         super(inventory, player, config, instance);
         this.petManager = petManager;
+        this.petConfigManager = petConfigManager;
         this.petItem = new PetItem();
     }
-    @Override
+
     public void addItems() {
         List<Pet> petList = new ArrayList<>(petManager.getPlayerPets(getPlayer()));
-        int[] slots = {9 + 2, 9 + 4, 9 + 6, 9 + 8};
+        int[] slots = {9 + 1, 9 + 3, 9 + 5, 9 + 7};
+        setBarrageIcon(slots[0]);
+        setBarrageIcon(slots[1]);
+        setBarrageIcon(slots[2]);
+        setBarrageIcon(slots[3]);
         for (int i = 0; i < slots.length && i < petManager.getPlayerPets(getPlayer()).size(); i++) {
-            setBarrageIcon(slots[i]);
             getInventory().setItem(slots[i], petItem.getItemByType(petList.get(i).getType(), getConfig()));
         }
     }
@@ -38,17 +41,13 @@ public class PetsGUI extends CustomGUI{
 
 
     public void setBarrageIcon(int slot){
-        getInventory().setItem(slot, new ItemStack(Material.BARRIER));
+        ItemStack barrier = Item(Material.BARRIER, petConfigManager.getBarrierDisplayName(), petConfigManager.getBarrierLore(), slot);
+        getInventory().setItem(slot, barrier);
     }
 
 
     public boolean hasPets(Player player){
         return petManager.getPlayerPets(player) != null;
-    }
-
-    @Override
-    public ItemStack Item(Material material, String displayName, String description, int slotPosition) {
-        return super.Item(material, displayName, description, slotPosition);
     }
 
 }

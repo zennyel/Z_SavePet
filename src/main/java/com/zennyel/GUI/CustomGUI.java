@@ -28,8 +28,6 @@ public abstract class CustomGUI implements Listener {
         this.inventory = inventory;
         this.config = config;
         this.player = player;
-        Bukkit.getPluginManager().registerEvents(this, instance);
-        addItems();
     }
 
     public void addItems(){
@@ -54,6 +52,23 @@ public abstract class CustomGUI implements Listener {
         return null;
     }
 
+    public ItemStack Item(Material material, String displayName,List<String> description, int slotPosition){
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(displayName);
+        meta.setLore(description);
+        item.setItemMeta(meta);
+        if (slotPosition >= 0 && slotPosition <= 8) {
+            return item;
+        } else if (slotPosition >= 9 && slotPosition <= 17) {
+            return item;
+        } else if (slotPosition >= 18 && slotPosition <= 26) {
+            return item;
+        }
+        return null;
+    }
+
+
     public Player getPlayer() {
         return player;
     }
@@ -67,13 +82,6 @@ public abstract class CustomGUI implements Listener {
 
     public SavePets getInstance() {
         return instance;
-    }
-
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event){
-        if (!event.getView().getTitle().equalsIgnoreCase(inventory.toString())) {
-            return;
-        }
     }
 
 }

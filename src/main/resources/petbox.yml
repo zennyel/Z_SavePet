@@ -1,19 +1,26 @@
 Menu:
   Title: "Pets Box"
-  Size: 27
   Items:
     Border:
       Display-Item:
-        - Material: GRAY_STAINED_GLASS_PANE
-          DisplayName: "&7Gray Glass"
+          Material: GRAY_STAINED_GLASS_PANE
+          DisplayName: "**"
           Lore:
-            - "&fThis is a gray glass pane"
-            - "&fused for decoration."
-        - Material: RED_STAINED_GLASS_PANE
-          DisplayName: "&cRed Glass"
+            - ""
+            - ""
+      Middle-Item:
+          Material: NETHER_STAR
+          DisplayName: "*"
           Lore:
-            - "&fThis is a red glass pane"
-            - "&fused for decoration."
+            - ""
+PetBoxItem:
+  Material: CHEST
+  DisplayName: '&5§lPET MYSTERY BOX'
+  Lore:
+    - "&aOpening this box you can get pets "
+    - "&afrom differents rarities and types!"
+    - "&7&nRight click to open"
+
 
 PetsSettings:
     common:

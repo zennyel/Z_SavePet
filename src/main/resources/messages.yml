@@ -1,0 +1,4 @@
+Messages:
+  boxCommand:
+    incorrect-command: 'Incorrect command, use: /pets givebox <quantity>'
+    invalid-number: 'The value on /pets givebox <quantity> must be a valid number'
