@@ -21,6 +21,9 @@ public class PetsGUI extends CustomGUI{
 
     public PetsGUI(Inventory inventory, Player player, FileConfiguration config, SavePets instance, PetManager petManager, PetConfigManager petConfigManager) {
         super(inventory, player, config, instance);
+        if (petManager == null) {
+            throw new IllegalArgumentException("PetManager cannot be null.");
+        }
         this.petManager = petManager;
         this.petConfigManager = petConfigManager;
         this.petItem = new PetItem();
