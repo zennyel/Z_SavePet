@@ -1,0 +1,30 @@
+Menu:
+  Title: "&7&nPets Fusion"
+  Items:
+    Border:
+      Display-Item:
+        Material: GRAY_STAINED_GLASS_PANE
+        DisplayName: "*"
+        Slot: 0-27
+        Lore:
+          - ""
+      Middle-Item:
+        Material: BEACON
+        DisplayName: "§6§lFuse Pets!"
+        Slot: 13
+        Lore:
+          - "§7Click to fuse your pets!"
+      Confirmation-Item:
+        Material: COMPASS
+        Slot: 31
+        DisplayName: ""
+        Lore:
+          - ""
+      Barrier-Item:
+        Material: BARRIER
+        Slot:
+          - 11
+          - 15
+        DisplayName: "§c§lSelect any pet!"
+        Lore:
+          - "§7There's no pet selected"
