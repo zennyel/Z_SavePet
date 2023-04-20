@@ -1,10 +1,12 @@
 package com.zennyel.GUI;
 
 import com.zennyel.SavePets;
-import com.zennyel.manager.PetManager;
+import com.zennyel.manager.pet.PetManager;
 import com.zennyel.manager.config.PetConfigManager;
 import com.zennyel.pet.Pet;
 import com.zennyel.pet.PetItem;
+import com.zennyel.pet.PetType;
+import com.zennyel.utils.PetUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -29,16 +31,35 @@ public class PetsGUI extends CustomGUI{
         this.petItem = new PetItem();
     }
 
-    public void addItems() {
+    public void addItems(Player player) {
         List<Pet> petList = new ArrayList<>(petManager.getPlayerPets(getPlayer()));
         int[] slots = {9 + 1, 9 + 3, 9 + 5, 9 + 7};
         setBarrageIcon(slots[0]);
         setBarrageIcon(slots[1]);
         setBarrageIcon(slots[2]);
         setBarrageIcon(slots[3]);
-        for (int i = 0; i < slots.length && i < petManager.getPlayerPets(getPlayer()).size(); i++) {
-            getInventory().setItem(slots[i], petItem.getItemByType(petList.get(i).getType(), getConfig()));
-        }
+        addPetItems(player);
+    }
+
+    public void addPetItems(Player player){
+       for(Pet pet : petManager.getPlayerPets(player)){
+           PetType type = pet.getType();
+           ItemStack is = PetUtils.getItemByPet(pet);
+           switch (type){
+               case EXP:
+                   getInventory().setItem(16, is);
+                   break;
+               case COIN:
+                   getInventory().setItem(14, is);
+                   break;
+               case MONEY:
+                   getInventory().setItem(12, is);
+                   break;
+               case DAMAGE:
+                   getInventory().setItem(10, is);
+                   break;
+           }
+       }
     }
 
 
@@ -52,5 +73,4 @@ public class PetsGUI extends CustomGUI{
     public boolean hasPets(Player player){
         return petManager.getPlayerPets(player) != null;
     }
-
 }

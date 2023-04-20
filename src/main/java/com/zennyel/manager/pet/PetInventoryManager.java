@@ -1,4 +1,4 @@
-package com.zennyel.manager;
+package com.zennyel.manager.pet;
 
 import com.zennyel.SavePets;
 

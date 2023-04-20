@@ -14,7 +14,7 @@ Menu:
           Lore:
             - "&fThis is a gray glass pane"
             - "&fused for decoration."
-        - Material: RED_STAINED_GLASS_PANE
+        - Material: BLACK_STAINED_GLASS_PANE
           DisplayName: "&cRed Glass"
           Lore:
             - "&fThis is a red glass pane"
@@ -24,19 +24,14 @@ Pets:
   Rarity:
     common:
       maxLevel: 50
-      xp: 1+{level}10
     rare:
-      maxLevel: 50
-      xp: 2+{level}*100
+      maxLevel: 100
     epic:
-      maxLevel: 50
-      xp: 3+{level}*1000
+      maxLevel: 150
     legendary:
-      maxLevel: 50
-      xp: 4+{level}*10000
+      maxLevel: 250
     mythical:
-      maxLevel: 50
-      xp: 5+{level}*10000
+      maxLevel: 350
 
 PetItems:
   Lore:
@@ -47,7 +42,7 @@ PetItems:
     -
     - '&6&lLEVEL: &f{petLevel}/{petMaxLevel}'
     - '&6EXP: {petExp}/{petMaxExp}'
-    - '{progressiveBar} &f{progressivePercentage} '
+    - '{progressiveBar}'
   Money:
     displayName: '&6Money&7Pet &7[LVL {petLevel}]'
     skull_enabled: true

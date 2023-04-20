@@ -13,8 +13,19 @@ public class MessagesConfigManager {
         this.fileConfiguration = messagesConfig.getConfiguration();
     }
 
-    public String getBoxCommandMessage(String message){
-        return fileConfiguration.getString("Messages.boxCommand." + message);
+    public String getHelpCommandMessage(String path){
+        return fileConfiguration.getString("Messages.helpCommand." + path).replace("&", "§");
+    }
+    public String getPetFusionMessage(String path){
+        return fileConfiguration.getString("Messages.petFusion." + path).replace("&", "§");
+    }
+
+    public String getBoxCommandMessage(String path,int quantity){
+        return fileConfiguration.getString("Messages.boxCommand." + path).replace("&", "§").replace("{quantity}", String.valueOf(quantity));
+    }
+
+    public String getBoxCommandMessage(String path){
+        return fileConfiguration.getString("Messages.boxCommand." + path).replace("&", "§");
     }
 
 

@@ -1,4 +1,4 @@
-package com.zennyel.listeners;
+package com.zennyel.listeners.player;
 
 import com.zennyel.GUI.PetBoxGUI;
 import com.zennyel.SavePets;
@@ -10,20 +10,25 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PlayerItemInteract implements Listener {
+public class PlayerItemInteractListener implements Listener {
 
     private PetBoxConfigManager petBoxConfigManager;
     private SavePets instance;
 
-    public PlayerItemInteract(PetBoxConfigManager petBoxConfigManager, SavePets instance) {
+    public PlayerItemInteractListener(PetBoxConfigManager petBoxConfigManager, SavePets instance) {
         this.petBoxConfigManager = petBoxConfigManager;
         this.instance = instance;
     }
 
     @EventHandler
     public void onPlayerItemInteract(PlayerInteractEvent event){
-        ItemStack is = petBoxConfigManager.getPetBoxItemStack();
+
         Player player = event.getPlayer();
+        handlePetBoxInteract(event,player);
+    }
+
+    public void handlePetBoxInteract(PlayerInteractEvent event, Player player){
+        ItemStack is = petBoxConfigManager.getPetBoxItemStack();
 
         if(player.getItemInHand().getType() != is.getType()) {
             return;
@@ -41,6 +46,8 @@ public class PlayerItemInteract implements Listener {
             petBoxGUI.addItems();
             player.openInventory(petBoxGUI.getInventory());
         }
+
     }
+
 
 }

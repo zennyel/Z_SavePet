@@ -26,18 +26,15 @@ public class PetConfigManager {
     }
 
     public Inventory createPetMenu() {
-        // Obter tamanho e título do inventário da configuração
         int size = configuration.getInt("Menu.Size");
         String title = ChatColor.translateAlternateColorCodes('&', configuration.getString("Menu.Title"));
         Inventory inventory = Bukkit.createInventory(null, size, title);
 
-        // Obter itens de borda da configuração
         List<Map<?, ?>> displayItems = configuration.getMapList("Menu.Items.Border.Display-Item");
         if (displayItems == null || displayItems.isEmpty()) {
             return inventory;
         }
 
-        // Obter materiais e metadados dos itens de borda da configuração
         ItemStack topItem = null;
         ItemStack bottomItem = null;
         for (Map<?, ?> item : displayItems) {
@@ -65,7 +62,6 @@ public class PetConfigManager {
             bottomItem = borderItem;
         }
 
-        // Preencher inventário com os itens de borda
         for(int i = 0; i < inventory.getSize() - 9; i++){
             inventory.setItem(i, topItem);
         }
@@ -197,17 +193,6 @@ public class PetConfigManager {
 
     public String getCoinSkull() {
         return configuration.getString("PetItems.Coin.skull");
-    }
-
-    public String getCoinMaterial() {
-        if (getCoinSkullEnabled()) {
-            return null;
-        }
-        return configuration.getString("PetItems.Coin.material");
-    }
-
-    public String get(String path) {
-        return configuration.getString(path);
     }
 
 }

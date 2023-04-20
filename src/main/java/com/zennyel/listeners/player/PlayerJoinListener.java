@@ -1,15 +1,15 @@
-package com.zennyel.listeners;
+package com.zennyel.listeners.player;
 
-import com.zennyel.manager.PetManager;
+import com.zennyel.manager.pet.PetManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerJoin implements Listener {
+public class PlayerJoinListener implements Listener {
     private PetManager manager;
 
-    public PlayerJoin(PetManager manager) {
+    public PlayerJoinListener(PetManager manager) {
         this.manager = manager;
     }
 

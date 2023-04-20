@@ -11,7 +11,6 @@ public class SavePets extends JavaPlugin {
     @Override
     public void onEnable() {
         manager = new PluginManager(this);
-        manager.setupSQL();
         manager.createTables();
         manager.registerCommands();
         manager.registerEvents();
@@ -20,7 +19,10 @@ public class SavePets extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        manager.savePets();
     }
 
-
+    public PluginManager getManager() {
+        return manager;
+    }
 }

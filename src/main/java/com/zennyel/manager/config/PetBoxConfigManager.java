@@ -1,14 +1,15 @@
 package com.zennyel.manager.config;
 
-import com.google.gson.internal.bind.JsonTreeReader;
+
 import com.zennyel.pet.Pet;
 import com.zennyel.pet.PetRarity;
 import com.zennyel.pet.PetType;
+import com.zennyel.utils.PetUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -183,61 +184,31 @@ public class PetBoxConfigManager{
     }
 
     public ItemStack getItemByPet(Pet pet)  {
+        PetUtils.setPetMaxLevels(pet);
         ItemStack itemStack;
         ItemMeta isMeta;
         PetType type = pet.getType();
-        List<String> lore = getConfig().getStringList("PetItems.Lore");
-        switch(type) {
-            case MONEY:
-                if (getConfig().getBoolean("PetItems.Money.skull_enabled")) {
-                    itemStack = createSkullItemStack(getConfig().getString("PetItems.Money.skull"));
+        List<String> lore = getLore(pet);
+        String typeString = WordUtils.capitalizeFully(type.toString().toLowerCase());
+        if (getConfig().getBoolean("PetItems."+ typeString + ".skull_enabled")) {
+                    itemStack = createSkullItemStack(getConfig().getString("PetItems."+ typeString +".skull"));
                 } else {
-                    itemStack = new ItemStack(Material.valueOf(getConfig().getString("PetItems.Money.material")));
+                    itemStack = new ItemStack(Material.valueOf(getConfig().getString("PetItems."+ typeString +"material")));
                 }
+        PetUtils.addNbTags(pet,itemStack);
                 isMeta = itemStack.getItemMeta();
-                isMeta.setDisplayName(getConfig().getString("PetItems.Money.displayName"));
+                isMeta.setDisplayName(getDisplayName("PetItems."+ typeString +".displayName", pet));
                 isMeta.setLore(lore);
                 itemStack.setItemMeta(isMeta);
-                break;
-            case EXP:
-                if (getConfig().getBoolean("PetItems.Exp.skull_enabled")) {
-                    itemStack = createSkullItemStack(getConfig().getString("PetItems.Exp.skull"));
-                } else {
-                    itemStack = new ItemStack(Material.valueOf(getConfig().getString("PetItems.Exp.material")));
-                }
-                isMeta = itemStack.getItemMeta();
-                isMeta.setDisplayName(getConfig().getString("PetItems.Exp.displayName"));
-                isMeta.setLore(lore);
-                itemStack.setItemMeta(isMeta);
-                break;
-            case DAMAGE:
-                if (getConfig().getBoolean("PetItems.Damage.skull_enabled")) {
-                    itemStack = createSkullItemStack(getConfig().getString("PetItems.Damage.skull"));
-                } else {
-                    itemStack = new ItemStack(Material.valueOf(getConfig().getString("PetItems.Damage.material")));
-                }
-                isMeta = itemStack.getItemMeta();
-                isMeta.setDisplayName(getConfig().getString("PetItems.Damage.displayName"));
-                isMeta.setLore(lore);
-                itemStack.setItemMeta(isMeta);
-                break;
-            case COIN:
-                if (getConfig().getBoolean("PetItems.Coin.skull_enabled")) {
-                    itemStack = createSkullItemStack(getConfig().getString("PetItems.Coin.skull"));
-                } else {
-                    itemStack = new ItemStack(Material.valueOf(getConfig().getString("PetItems.Coin.material")));
-                }
-                isMeta = itemStack.getItemMeta();
-                isMeta.setDisplayName(getConfig().getString("PetItems.Coin.displayName"));
-                isMeta.setLore(lore);
-                itemStack.setItemMeta(isMeta);
-                break;
-            default:
-                return null;
-        }
         return itemStack;
     }
 
+    public String getDisplayName(String path, Pet pet){
+        String displayname = getConfig().getString(path);
+        displayname = displayname.replace("&", "§").
+                replace("{petLevel}", "" + pet.getLevel());
+        return displayname;
+    }
     public List<String> getLore(Pet pet) {
         List<String> lore = getConfig().getStringList("PetItems.Lore");
         List<String> newLore = new ArrayList<>();
@@ -245,21 +216,42 @@ public class PetBoxConfigManager{
         int maxExp = (int) pet.getMaxExperience();
         int level = pet.getLevel();
         int maxLevel = pet.getMaxLevel();
-        String tier = String.valueOf(pet.getRarity()).toLowerCase();
 
         for (String line : lore) {
             String newLine = line.replace("&", "§")
-                    .replace("{tier}", tier)
+                    .replace("{tier}", tierFormatter(pet))
                     .replace("{boost}", String.valueOf(getBoost(pet)))
                     .replace("{petLevel}", String.valueOf(level))
                     .replace("{petMaxLevel}", String.valueOf(maxLevel))
                     .replace("{petExp}", String.valueOf(petExp))
                     .replace("{petMaxExp}", String.valueOf(maxExp))
-                    .replace("{progressiveBar}", getProgressiveBar(petExp, maxExp, 10, "|", "&a", "&c"))
-                    .replace("{progressivePercentage}", String.format("%.2f", getProgressivePercentage(petExp, maxExp)) + "%");
+                    .replace("{progressiveBar}", getProgressiveBar(petExp, maxExp, 50, "|", "§a", "§c"));
             newLore.add(newLine);
         }
         return newLore;
+    }
+
+    public String tierFormatter(Pet pet){
+        PetRarity rarity = pet.getRarity();
+        String typeString = rarity.toString();
+        switch (rarity){
+            case COMMON:
+                typeString = "§a§l" + typeString;
+                break;
+            case RARE:
+                typeString = "§b§l" + typeString;
+                break;
+            case EPIC:
+                typeString = "§5§l" + typeString;
+                break;
+            case MYTHICAL:
+                typeString = "§6§l" + typeString;
+                break;
+            case LEGENDARY:
+                typeString = "§4§l" + typeString;
+                break;
+        }
+        return typeString;
     }
 
     public String getBoost(Pet pet) {
@@ -267,12 +259,7 @@ public class PetBoxConfigManager{
         int multiplier = getConfig().getInt("PetSettings."+String.valueOf(rarity).toLowerCase()+".dropChance");
 
         double boostedValue = 100 * (1 + (multiplier / 100.0));
-        return String.format("%.2f%%", boostedValue);
-    }
-
-    public String getProgressivePercentage(int current, int max) {
-        double percentage = (current / (double) max) * 100;
-        return String.format("%.2f%%", percentage);
+        return String.valueOf(boostedValue);
     }
 
     public String getProgressiveBar(int current, int max, int totalBars, String barChar, String completedColor, String notCompletedColor){
@@ -280,7 +267,12 @@ public class PetBoxConfigManager{
         int progressBars = (int) (totalBars * percent);
 
         return StringUtils.repeat(completedColor + barChar, progressBars)
-                + StringUtils.repeat(notCompletedColor + barChar, totalBars - progressBars);
+                + StringUtils.repeat(notCompletedColor + barChar, totalBars - progressBars) + getPercentage(current, max);
+    }
+
+    public static String getPercentage(int value, int maxvalue) {
+        int percentage = (int) (((double) value / (double) maxvalue) * 100.0);
+        return " §f" + percentage + "%";
     }
 
 

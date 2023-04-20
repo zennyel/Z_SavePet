@@ -10,7 +10,13 @@ public class Pet {
     private int maxLevel;
     private double experience;
     private double maxExperience;
-    private UUID petId;
+
+    public Pet(PetType type, PetRarity rarity, int level, double experience) {
+        this.type = type;
+        this.rarity = rarity;
+        this.level = level;
+        this.experience = experience;
+    }
 
     public Pet(PetType type, int level, double experience) {
         this.type = type;
@@ -22,7 +28,6 @@ public class Pet {
         this.type = type;
         this.level = level;
         this.experience = experience;
-        this.petId = petId;
     }
 
     public Pet(PetType type, PetRarity rarity, int level, double experience, UUID petId) {
@@ -30,7 +35,6 @@ public class Pet {
         this.rarity = rarity;
         this.level = level;
         this.experience = experience;
-        this.petId = petId;
     }
 
     public void setMaxExperience(double maxExperience) {
@@ -46,14 +50,6 @@ public class Pet {
 
     public PetRarity getRarity() {
         return rarity;
-    }
-
-    public void generateUuid(){
-        this.petId = UUID.randomUUID();
-    }
-
-    public UUID getPetId() {
-        return petId;
     }
 
     public PetType getType() {
@@ -78,10 +74,6 @@ public class Pet {
 
     public void setExperience(double experience) {
         this.experience = experience;
-    }
-
-    public void setPetId(UUID petId) {
-        this.petId = petId;
     }
 
     public int getMaxLevel() {

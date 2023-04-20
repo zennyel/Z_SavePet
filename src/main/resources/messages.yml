@@ -1,4 +1,19 @@
 Messages:
+  giveCommand:
+    incorrect-command: '&cIncorrect command, use: /pets give <type> <rarity> <level>.'
+    invalid-type: '&cInvalid type, available: exp, money, coin, dmg'
+    invalid-rarity: '&cInvalid rarity, available: common, rare, epic, mythical, legendary.'
+  helpCommand:
+    help:
+      - '&aUse: /pets to access the pets menu.'
+      - '&aUse: /pets fusion to access the fusion menu.'
+    staff:
+      - '&aUse: /pets givebox <quantity> to get pet boxes'
+      - '&aUse: /pets give <type> <rarity> <level>'
   boxCommand:
-    incorrect-command: 'Incorrect command, use: /pets givebox <quantity>'
-    invalid-number: 'The value on /pets givebox <quantity> must be a valid number'
+    incorrect-command: '&cIncorrect command, use: /pets givebox <quantity>'
+    invalid-number: '¨&cThe value on /pets givebox <quantity> must be a valid number'
+    box-gived: '&aRecived successfully {quantity}'
+  petFusion:
+    different-types: '&cThe both pets must have the same types!'
+    different-rarities: '§cThe both pets must have the same rarities!'

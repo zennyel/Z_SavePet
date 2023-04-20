@@ -2,6 +2,7 @@ name: SavePets
 version: '${project.version}'
 main: com.zennyel.SavePets
 api-version: 1.19
+softdepend: [Vault, VaultEvents, SaveMobCoins]
 commands:
   pets:
     description: 'The main command for savepets'

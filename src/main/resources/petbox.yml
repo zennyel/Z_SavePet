@@ -24,35 +24,44 @@ PetBoxItem:
 
 PetsSettings:
     common:
-      dropChance: 25
-      multiplier: 25*{level}*42
+      dropChance: 60
     rare:
-      dropChance: 25
-      multiplier: 25*{level}*42
+      dropChance: 30
     epic:
-      dropChance: 25
-      multiplier: 25*{level}*42
+      dropChance: 15
     mythical:
-      dropChance: 25
-      multiplier: 25*{level}*42
+      dropChance: 5
+    legendary:
+      dropChance: 1
+
 
 PetItems:
+  Lore:
+    - '&7{tier} &7Tier'
+    - ''
+    - '&e&lABILITY'
+    - '&aThe booster at you level is &a{boost}%'
+    - ''
+    - '&6&lLEVEL: &f{petLevel}/{petMaxLevel}'
+    - '&6&lEXP: &f{petExp}/{petMaxExp}'
+    - '{progressiveBar}'
   Money:
+    displayName: '&6&lMoney&5&lPet &7[LVL {petLevel}]'
     skull_enabled: true
-    skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
-    #if skull not enabled
+    skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOThhNzBkZjhjNTMxZDBjYWMwNDY5NGYyYTJhYjVmNzU3YzczMmRlMmI2NTY3OTNlNTQ5YTc0Njc5YjQ1YzljMiJ9fX0='
     material: 'ACACIA_DOOR'
   Exp:
+    displayName: '&6&lExp&5&lPet &7[LVL {petLevel}]'
     skull_enabled: true
-    skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
+    skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmMxMzM0NmI0ZmVjNzkxOTZmMWMxMTg5OWQyY2ExODQ2NDY4OWQ4YzRhYzM3MzdmYzNiM2E0MGJhNTUzOTIxMSJ9fX0='
     material: 'ACACIA_TABLES'
   Damage:
+    displayName: '&6&lDamage&5&lPet &7[LVL {petLevel}]'
     skull_enabled: true
     skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
-    #if skull not enabled
     material: 'ACACIA_LEAVES'
   Coin:
+    displayName: '&6&lCoin&5&lPet &7[LVL {petLevel}]'
     skull_enabled: true
-    skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJiY2FjZWViNDE2MmY0MDBkNDQ3NDMzMTU5MzJhYzgyMGQzMTE5YWM4OTg2YTAxNjFhNzI2MTYxY2NjOTNmYyJ9fX0='
-    #if skull not enabled
+    skull: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDY1NTE4NDA5NTVmNTI0MzY3NTgwZjExYjM1MjI4OTM4YjY3ODYzOTdhOGYyZThjOGNjNmIwZWIwMWI1ZGIzZCJ9fX0='
     material: 'ACACIA_OAK'

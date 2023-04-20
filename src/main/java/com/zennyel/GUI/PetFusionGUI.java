@@ -10,7 +10,4 @@ public class PetFusionGUI extends CustomGUI{
         super(inventory, player, config, instance);
     }
 
-    public void addItems(){
-
-    }
 }
