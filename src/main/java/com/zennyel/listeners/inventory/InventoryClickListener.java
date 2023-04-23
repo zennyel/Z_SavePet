@@ -1,5 +1,6 @@
 package com.zennyel.listeners.inventory;
 
+import com.zennyel.events.PetUnequipEvent;
 import com.zennyel.manager.config.MessagesConfigManager;
 import com.zennyel.manager.config.PetBoxConfigManager;
 import com.zennyel.manager.config.PetConfigManager;
@@ -9,6 +10,7 @@ import com.zennyel.pet.Pet;
 import com.zennyel.pet.PetRarity;
 import com.zennyel.pet.PetType;
 import com.zennyel.utils.PetUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,10 +43,8 @@ public class InventoryClickListener implements Listener {
 
     public void handlePet(InventoryClickEvent event, String inventoryTitle) {
         Player player = (Player) event.getWhoClicked();
-
         Inventory inventory = event.getInventory();
         ItemStack clickedItem = event.getCurrentItem();
-        ItemStack barrier = petFusionConfigManager.getBarrierItem();
 
         if (!event.getView().getTitle().equalsIgnoreCase(inventoryTitle)) {
             return;
@@ -52,56 +52,47 @@ public class InventoryClickListener implements Listener {
 
         event.setCancelled(true);
 
-        if (clickedItem == null) {
+        if(clickedItem == null){
             return;
         }
+
         Pet pet = PetUtils.getPetByTags(clickedItem);
 
         if (pet == null) {
             return;
         }
 
-        if (player.getInventory().contains(clickedItem)) {
-            PetType type = pet.getType();
+        if (event.getClickedInventory().equals(player.getInventory())) {
             player.getInventory().removeItem(clickedItem.asOne());
-
             petManager.equipPet(player, pet);
-            switch (type) {
-                case DAMAGE:
-                    inventory.setItem(10, clickedItem.asOne());
-                    break;
-                case MONEY:
-                    inventory.setItem(12, clickedItem.asOne());
-                    break;
-                case COIN:
-                    inventory.setItem(14, clickedItem.asOne());
-                    break;
-                case EXP:
-                    inventory.setItem(16, clickedItem.asOne());
-                    break;
+            inventory.setItem(getSlotFromType(pet.getType()), clickedItem.asOne());
+        }else if (event.getClickedInventory().equals(inventory)) {
+
+                PetType petType = PetUtils.getPetByTags(clickedItem).getType();
+                pet = petManager.getPetByType(player, petType);
+                if (pet != null) {
+                    petManager.removePlayerPet(player, pet);
+                    Bukkit.getPluginManager().callEvent(new PetUnequipEvent(pet));
+                    player.closeInventory();
+                    player.getInventory().addItem(clickedItem.asOne());
+                }
             }
-            return;
+
         }
 
-        if(inventory.contains(clickedItem)) {
-            petManager.removePlayerPet(player, pet);
-            player.getInventory().addItem(clickedItem.asOne());
-            switch (pet.getType()) {
-                case DAMAGE:
-                    inventory.setItem(10, barrier);
-                    break;
-                case MONEY:
-                    inventory.setItem(12, barrier);
-                    break;
-                case COIN:
-                    inventory.setItem(14, barrier);
-                    break;
-                case EXP:
-                    inventory.setItem(16, barrier);
-                    break;
-            }
+    private int getSlotFromType(PetType type) {
+        switch (type) {
+            case DAMAGE:
+                return 10;
+            case MONEY:
+                return 12;
+            case COIN:
+                return 14;
+            case EXP:
+                return 16;
+            default:
+                return -1;
         }
-
     }
 
     public void handlePetFusion(InventoryClickEvent event, String inventoryTitle) {

@@ -2,14 +2,14 @@ package com.zennyel.events;
 
 import com.zennyel.pet.Pet;
 
-public class PetLevelUpEvent extends CustomEvent{
+public class PetLevelChangeEvent extends CustomEvent{
 
     private Pet pet;
 
     private int previousLevel;
     private int newLevel;
 
-    public PetLevelUpEvent(Pet pet, int previousLevel, int newLevel) {
+    public PetLevelChangeEvent(Pet pet, int previousLevel, int newLevel) {
         this.pet = pet;
         this.previousLevel = previousLevel;
         this.newLevel = newLevel;

@@ -5,10 +5,13 @@ import com.zennyel.pet.Pet;
 public class PetExpChangeEvent extends CustomEvent{
 
     private Pet pet;
-    private int amount;
+    private double previousExp;
+    private double newExp;
 
-    public PetExpChangeEvent(Pet pet) {
+    public PetExpChangeEvent(Pet pet, double previousExp, double newExp) {
         this.pet = pet;
+        this.previousExp = previousExp;
+        this.newExp = newExp;
     }
 
     public Pet getPet() {
@@ -19,11 +22,19 @@ public class PetExpChangeEvent extends CustomEvent{
         this.pet = pet;
     }
 
-    public int getAmount() {
-        return amount;
+    public double getPreviousExp() {
+        return previousExp;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setPreviousExp(double previousExp) {
+        this.previousExp = previousExp;
+    }
+
+    public double getNewExp() {
+        return newExp;
+    }
+
+    public void setNewExp(double newExp) {
+        this.newExp = newExp;
     }
 }

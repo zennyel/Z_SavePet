@@ -2,9 +2,11 @@ package com.zennyel.manager.pet;
 
 import com.zennyel.SavePets;
 import com.zennyel.database.PetsDB;
+import com.zennyel.events.PetEquipEvent;
 import com.zennyel.pet.Pet;
 import com.zennyel.pet.PetType;
 import com.zennyel.utils.PetUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,7 +36,7 @@ public class PetManager {
             if (pet.getType().equals(currentPet.getType())) {
                 ItemStack itemStack = PetUtils.getItemByPet(currentPet);
                 petIterator.remove();
-                player.getInventory().addItem(itemStack);
+                player.getInventory().addItem(itemStack.asOne());
             }
         }
 
@@ -42,6 +44,7 @@ public class PetManager {
             petList.add(pet);
         }
 
+        Bukkit.getPluginManager().callEvent(new PetEquipEvent(pet));
         petSets.put(player, petList);
     }
 
@@ -80,8 +83,11 @@ public class PetManager {
     }
 
     public void removePlayerPet(Player player, Pet pet){
-        petSets.get(player).remove(pet);
+        List<Pet> petList = petSets.get(player);
+        petList.remove(pet);
+        petSets.put(player, petList);
     }
+
 
     public Pet getPlayerPetbyType(Player player, PetType type){
         List<Pet> petList = petSets.get(player);

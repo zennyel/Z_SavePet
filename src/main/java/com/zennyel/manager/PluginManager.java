@@ -7,19 +7,23 @@ import com.zennyel.config.pet.PetBoxConfig;
 import com.zennyel.config.pet.PetConfig;
 import com.zennyel.config.pet.PetFusionConfig;
 import com.zennyel.database.PetsDB;
+import com.zennyel.listeners.extra.MobCoinGainListener;
+import com.zennyel.listeners.extra.MoneyChangeListener;
 import com.zennyel.listeners.inventory.InventoryClickListener;
 import com.zennyel.listeners.inventory.InventoryCloseListener;
-import com.zennyel.listeners.player.PlayerItemInteractListener;
-import com.zennyel.listeners.player.PlayerJoinListener;
-import com.zennyel.listeners.player.PlayerQuitListener;
+import com.zennyel.listeners.player.*;
 import com.zennyel.manager.config.MessagesConfigManager;
 import com.zennyel.manager.config.PetBoxConfigManager;
 import com.zennyel.manager.config.PetConfigManager;
 import com.zennyel.manager.config.PetFusionConfigManager;
+import com.zennyel.manager.pet.PetCandyManager;
 import com.zennyel.manager.pet.PetInventoryManager;
 import com.zennyel.manager.pet.PetManager;
+import fun.lewisdev.savemobcoins.SaveMobCoinsPlugin;
+import net.brcdev.shopgui.ShopGuiPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 
 public class PluginManager {
@@ -36,7 +40,9 @@ public class PluginManager {
     private PetBoxConfigManager petBoxConfigManager;
     private MessagesConfigManager messagesConfigManager;
     private PetInventoryManager petInventoryManager;
-
+    private SaveMobCoinsPlugin saveMobCoinsAPI;
+    private ShopGuiPlugin shopGuiPlusApi;
+    private PetCandyManager petCandyManager;
     public PluginManager(SavePets plugin) {
         this.plugin = plugin;
         this.petsDB = new PetsDB(plugin);
@@ -50,6 +56,9 @@ public class PluginManager {
         this.messagesConfigManager = new MessagesConfigManager(messagesConfig);
         this.petBoxConfigManager = new PetBoxConfigManager(petBoxConfig.getConfiguration());
         this.petInventoryManager = new PetInventoryManager(plugin);
+        this.saveMobCoinsAPI = (SaveMobCoinsPlugin) Bukkit.getPluginManager().getPlugin("SaveMobCoins");
+        this.shopGuiPlusApi = (ShopGuiPlugin) Bukkit.getPluginManager().getPlugin("ShopGuiPlus");
+        this.petCandyManager = new PetCandyManager(petConfigManager);
     }
 
     public void createTables(){
@@ -59,7 +68,7 @@ public class PluginManager {
     }
 
     public void registerCommands(){
-        plugin.getCommand("pets").setExecutor(new PetCommand(petConfigManager, plugin, petManager, messagesConfigManager, petBoxConfigManager, petFusionConfigManager));
+        plugin.getCommand("pets").setExecutor(new PetCommand(petConfigManager, plugin, petManager, messagesConfigManager, petBoxConfigManager, petFusionConfigManager, petCandyManager));
     }
 
     public void registerEvents(){
@@ -69,6 +78,11 @@ public class PluginManager {
         pm.registerEvents(new PlayerItemInteractListener(petBoxConfigManager,plugin), plugin);
         pm.registerEvents(new PlayerQuitListener(petManager), plugin);
         pm.registerEvents(new InventoryCloseListener(petFusionConfigManager), plugin);
+        pm.registerEvents(new PlayerDamageListener(petManager), plugin);
+        pm.registerEvents(new PlayerExpChangeListener(petManager), plugin);
+        pm.registerEvents(new PlayerBlockPlaceListener(petBoxConfigManager), plugin);
+        pm.registerEvents(new MobCoinGainListener(petManager), (Plugin) saveMobCoinsAPI);
+        pm.registerEvents(new MoneyChangeListener(petManager),shopGuiPlusApi);
     }
 
     public void loadPets(){
@@ -79,6 +93,9 @@ public class PluginManager {
 
     public void savePets(){
         for(Player player : Bukkit.getOnlinePlayers()){
+            if(petManager.getPlayerPets(player) == null){
+                return;
+            }
             petManager.savePlayerPets(player);
         }
     }

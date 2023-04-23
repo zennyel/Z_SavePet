@@ -1,5 +1,9 @@
 package com.zennyel.pet;
 
+import com.zennyel.events.PetExpChangeEvent;
+import com.zennyel.events.PetLevelChangeEvent;
+import org.bukkit.Bukkit;
+
 import java.util.UUID;
 
 public class Pet {
@@ -65,6 +69,7 @@ public class Pet {
     }
 
     public void setLevel(int level) {
+        Bukkit.getPluginManager().callEvent(new PetLevelChangeEvent(this, getLevel(), level));
         this.level = level;
     }
 
@@ -73,6 +78,7 @@ public class Pet {
     }
 
     public void setExperience(double experience) {
+        Bukkit.getPluginManager().callEvent(new PetExpChangeEvent(this, getExperience(), experience));
         this.experience = experience;
     }
 

@@ -7,16 +7,17 @@ import com.zennyel.pet.Pet;
 import com.zennyel.pet.PetItem;
 import com.zennyel.pet.PetType;
 import com.zennyel.utils.PetUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class PetsGUI extends CustomGUI{
+public class PetsGUI extends CustomGUI {
     private PetManager petManager;
     private final PetItem petItem;
     private final PetConfigManager petConfigManager;
@@ -32,35 +33,37 @@ public class PetsGUI extends CustomGUI{
     }
 
     public void addItems(Player player) {
-        List<Pet> petList = new ArrayList<>(petManager.getPlayerPets(getPlayer()));
-        int[] slots = {9 + 1, 9 + 3, 9 + 5, 9 + 7};
-        setBarrageIcon(slots[0]);
-        setBarrageIcon(slots[1]);
-        setBarrageIcon(slots[2]);
-        setBarrageIcon(slots[3]);
-        addPetItems(player);
+        setBarrageIcon(10);
+        setBarrageIcon(12);
+        setBarrageIcon(14);
+        setBarrageIcon(16);
     }
 
-    public void addPetItems(Player player){
-       for(Pet pet : petManager.getPlayerPets(player)){
-           PetType type = pet.getType();
-           ItemStack is = PetUtils.getItemByPet(pet);
-           switch (type){
-               case EXP:
-                   getInventory().setItem(16, is);
-                   break;
-               case COIN:
-                   getInventory().setItem(14, is);
-                   break;
-               case MONEY:
-                   getInventory().setItem(12, is);
-                   break;
-               case DAMAGE:
-                   getInventory().setItem(10, is);
-                   break;
-           }
-       }
+    public void addPetItems(Player player) {
+        List<Pet> petList = petManager.getPlayerPets(player);
+        AtomicReference<ItemStack> itemStack = null;
+        Bukkit.getScheduler().runTaskAsynchronously(getInstance(), ()->{
+        for (Pet pet : petList) {
+            itemStack.set(PetUtils.getItemByPet(pet));
+            getInventory().setItem(getPetTypeSlot(pet.getType()), itemStack.get());
+        }
+        });
     }
+
+    public int getPetTypeSlot(PetType petType) {
+        switch (petType) {
+            case EXP:
+                return 16;
+            case COIN:
+                return 14;
+            case MONEY:
+                return 12;
+            case DAMAGE:
+                return 10;
+        }
+        return 0;
+    }
+
 
 
 

@@ -30,11 +30,6 @@ public class PlayerExpChangeListener implements Listener {
             return;
         }
 
-        EntityDeathEvent deathEvent = (EntityDeathEvent) event.getSource();
-        if (deathEvent.getEntity() instanceof Monster && deathEvent.getEntity() instanceof Animals) {
-            return;
-        }
-
         List<Pet> petList = petManager.getPlayerPets(player);
         Pet expPet = null;
         for(Pet pet : petList) {
@@ -52,6 +47,9 @@ public class PlayerExpChangeListener implements Listener {
         }
 
     public void boostPlayerExp(PlayerExpChangeEvent event, Pet pet){
+        if(pet == null){
+            return;
+        }
         PetType type = pet.getType();
         if(type.equals(PetType.EXP)){
             return;

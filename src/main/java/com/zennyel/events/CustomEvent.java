@@ -6,16 +6,15 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class CustomEvent extends Event implements Cancellable {
-    private HandlerList handlerList;
+    private static final HandlerList handlerList = new HandlerList();
     private boolean cancelled;
 
-
-    public HandlerList getHandlerList() {
-        return handlerList;
+    public CustomEvent() {
+        super(false);
     }
 
-    public void setHandlerList(HandlerList handlerList) {
-        this.handlerList = handlerList;
+    public static HandlerList getHandlerList() {
+        return handlerList;
     }
 
     @Override

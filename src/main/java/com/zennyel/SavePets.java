@@ -1,7 +1,6 @@
 package com.zennyel;
 
 import com.zennyel.manager.PluginManager;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SavePets extends JavaPlugin {

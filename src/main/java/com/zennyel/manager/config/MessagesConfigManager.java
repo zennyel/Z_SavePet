@@ -13,6 +13,14 @@ public class MessagesConfigManager {
         this.fileConfiguration = messagesConfig.getConfiguration();
     }
 
+    public String getGiveCandyCommandMessage(String path){
+        return fileConfiguration.getString("Messages.giveCandy." + path).replace("&", "§");
+    }
+
+    public String getGiveCommandMessage(String path){
+        return fileConfiguration.getString("Messages.giveCommand." + path).replace("&", "§");
+    }
+
     public String getHelpCommandMessage(String path){
         return fileConfiguration.getString("Messages.helpCommand." + path).replace("&", "§");
     }

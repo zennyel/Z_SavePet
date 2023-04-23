@@ -1,4 +1,7 @@
 Messages:
+  giveCandy:
+    incorrect-command: '&cIncorrect command, use: /pets givecandy <quantity>.'
+    candy-gived: '&aCandies successfully recived.'
   giveCommand:
     incorrect-command: '&cIncorrect command, use: /pets give <type> <rarity> <level>.'
     invalid-type: '&cInvalid type, available: exp, money, coin, dmg'

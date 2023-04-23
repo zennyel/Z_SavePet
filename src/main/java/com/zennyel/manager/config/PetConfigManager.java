@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PetConfigManager {
 
@@ -68,13 +69,6 @@ public class PetConfigManager {
         for(int i = inventory.getSize() - 9; i < inventory.getSize(); i++){
             inventory.setItem(i, bottomItem);
         }
-
-
-
-
-
-
-
         return inventory;
     }
 
@@ -94,106 +88,19 @@ public class PetConfigManager {
         return configuration.getString("Menu.Title");
     }
 
-    public int getMenuSize() {
-        return configuration.getInt("Menu.Size");
+    public ItemStack getPetCandyItem(){
+        Material material = Material.getMaterial(getConfiguration().getString("PetCandy.material"));
+        ItemStack itemStack = new ItemStack(material);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        String displayName = getConfiguration().getString("PetCandy.displayName");
+        displayName = displayName.replace("&", "§");
+        List<String> lore = getConfiguration().getStringList("PetCandy.lore");
+        itemMeta.setDisplayName(displayName);
+        itemMeta.setLore(lore.stream().map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList()));
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
-    public List<String> getMenuBorderLore() {
-        return configuration.getStringList("Menu.Items.Border.Lore");
-    }
-
-    public String getCommonPetMaxLevel() {
-        return configuration.getString("Pets.Rarity.common.maxLevel");
-    }
-
-    public String getRarePetMaxLevel() {
-        return configuration.getString("Pets.Rarity.rare.maxLevel");
-    }
-
-    public String getEpicPetMaxLevel() {
-        return configuration.getString("Pets.Rarity.epic.maxLevel");
-    }
-
-    public String getLegendaryPetMaxLevel() {
-        return configuration.getString("Pets.Rarity.legendary.maxLevel");
-    }
-
-    public String getMythicalPetMaxLevel() {
-        return configuration.getString("Pets.Rarity.mythical.maxLevel");
-    }
-
-    public String getCommonPetXP() {
-        return configuration.getString("Pets.Rarity.common.xp");
-    }
-
-    public String getRarePetXP() {
-        return configuration.getString("Pets.Rarity.rare.xp");
-    }
-
-    public String getEpicPetXP() {
-        return configuration.getString("Pets.Rarity.epic.xp");
-    }
-
-    public String getLegendaryPetXP() {
-        return configuration.getString("Pets.Rarity.legendary.xp");
-    }
-
-    public String getMythicalPetXP() {
-        return configuration.getString("Pets.Rarity.mythical.xp");
-    }
-
-    public boolean getMoneySkullEnabled() {
-        return configuration.getBoolean("PetItems.Money.skull_enabled");
-    }
-
-    public String getMoneySkull() {
-        return configuration.getString("PetItems.Money.skull");
-    }
-
-    public String getMoneyMaterial() {
-        if (getMoneySkullEnabled()) {
-            return null;
-        }
-        return configuration.getString("PetItems.Money.material");
-    }
-
-    public boolean getExpSkullEnabled() {
-        return configuration.getBoolean("PetItems.Exp.skull_enabled");
-    }
-
-    public String getExpSkull() {
-        return configuration.getString("PetItems.Exp.skull");
-    }
-
-    public String getExpMaterial() {
-        if (getExpSkullEnabled()) {
-            return null;
-        }
-        return configuration.getString("PetItems.Exp.material");
-    }
-
-    public boolean getDamageSkullEnabled() {
-        return configuration.getBoolean("PetItems.Damage.skull_enabled");
-    }
-
-    public String getDamageSkull() {
-        return configuration.getString("PetItems.Damage.skull");
-    }
-
-    public String getDamageMaterial() {
-        if (getDamageSkullEnabled()) {
-            return null;
-        }
-        return configuration.getString("PetItems.Damage.material");
-    }
-
-    public boolean getCoinSkullEnabled() {
-        return configuration.getBoolean("PetItems.Coin.skull_enabled");
-    }
-
-    public String getCoinSkull() {
-        return configuration.getString("PetItems.Coin.skull");
-    }
 
 }
 

@@ -101,13 +101,22 @@ public class PetUtils {
         return String.valueOf(boostedValue);
     }
 
-    public static String getProgressiveBar(int current, int max, int totalBars, String barChar, String completedColor, String notCompletedColor){
+    public static String getProgressiveBar(int current, int max, int totalBars, String barChar, String completedColor, String notCompletedColor) {
         float percent = (float) current / max;
         int progressBars = (int) (totalBars * percent);
 
-        return StringUtils.repeat(completedColor + barChar, progressBars)
-                + StringUtils.repeat(notCompletedColor + barChar, totalBars - progressBars)+ getPercentage(current, max);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < progressBars; i++) {
+            sb.append(completedColor).append(barChar);
+        }
+        for (int i = progressBars; i < totalBars; i++) {
+            sb.append(notCompletedColor).append(barChar);
+        }
+        sb.append(getPercentage(current, max));
+
+        return sb.toString();
     }
+
 
     public static String getPercentage(int value, int maxvalue) {
         int percentage = (int) (((double) value / (double) maxvalue) * 100.0);
